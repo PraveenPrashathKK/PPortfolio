@@ -1,0 +1,195 @@
+
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Space Grotesk Variable', 'Inter Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-page: #0b0e14;
+  --color-surface: #111722;
+  --color-surface-hover: #151d2b;
+  --color-panel: #0d1220;
+  --color-panel-2: #17243a;
+  --color-leet: #0c130f;
+}
+
+/* Light theme: remap the palette. White overlays become ink overlays,
+   light greys become dark greys and bright accents deepen for contrast. */
+html[data-theme='light'] {
+  color-scheme: light;
+  --color-page: #f4f7fc;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f1f5fb;
+  --color-panel: #ffffff;
+  --color-panel-2: #e8f0ff;
+  --color-leet: #f0faf3;
+
+  --color-white: #0f172a;
+  --color-gray-200: #1e293b;
+  --color-gray-300: #334155;
+  --color-gray-400: #475569;
+  --color-gray-500: #64748b;
+  --color-gray-600: #94a3b8;
+
+  --color-blue-300: #1d4ed8;
+  --color-blue-400: #2563eb;
+  --color-cyan-300: #0e7490;
+  --color-emerald-400: #059669;
+  --color-amber-400: #b45309;
+  --color-yellow-400: #a16207;
+  --color-green-300: #15803d;
+  --color-green-400: #16a34a;
+}
+
+html[data-theme='light'] .glow-drift {
+  background-color: rgb(59 130 246 / 0.20);
+}
+
+
+:root {
+  font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #f3f4f6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+  background: var(--color-page);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--color-white, #f3f4f6);
+  background: var(--color-page);
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 24 24'><path d='M4 2.5l15 8.2-6.4 1.9L9.9 19z' fill='%233B82F6' stroke='white' stroke-width='1.3' stroke-linejoin='round'/></svg>") 4 3, auto;
+}
+
+a, button, [role='button'], summary, label[for], select {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24'><path d='M4 2.5l15 8.2-6.4 1.9L9.9 19z' fill='white' stroke='%232563EB' stroke-width='1.6' stroke-linejoin='round'/></svg>") 5 4, pointer;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+::selection {
+  color: #fff;
+  background: rgba(37, 99, 235, 0.55);
+}
+
+@keyframes glowDrift {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 1; }
+  50% { transform: translate3d(0, 40px, 0); opacity: 0.75; }
+}
+
+.glow-drift {
+  animation: glowDrift 14s ease-in-out infinite;
+}
+
+@keyframes orbit {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-drift, .orbit-slow { animation: none; }
+}
+
+/* Theme switch: circular reveal (View Transitions) with a fade fallback */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease,
+    fill 0.4s ease, stroke 0.4s ease !important;
+}
+
+/* Mouse parallax for background glows (variables set by PointerParallax) */
+.parallax {
+  transform: translate3d(calc(var(--px, 0) * var(--pd, -28px)), calc(var(--py, 0) * var(--pd, -28px)), 0);
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hero entrance */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-in {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Keyboard focus */
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 3px;
+}
+
+/* Scrollbar */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.5) transparent;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .parallax { transform: none; transition: none; }
+  .hero-in { animation: none; }
+}
+
+/* Keeps translucent backgrounds from bleeding under rounded translucent borders */
+@layer base {
+  * {
+    background-clip: padding-box;
+  }
+}
+
+/* Typography: Space Grotesk for headings and the wordmark, JetBrains Mono for small labels */
+@layer base {
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+  /* Every wide-tracked uppercase label (section kickers, stat captions, tabs) */
+  [class*='tracking-[0.'] {
+    font-family: var(--font-mono);
+  }
+}
